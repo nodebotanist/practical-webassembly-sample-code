@@ -9,11 +9,18 @@
 <body>
     
     <script>
-        let importObject = {}
+        let importObject = {
+            console: {
+                log(arg) {
+                    console.log(arg)
+                }
+            }
+        }
         WebAssembly.instantiateStreaming(fetch('example.wasm'), importObject).then(
             (obj) => {
                 let result = obj.instance.exports.add(14, 33)
                 console.log(result)
+                obj.instance.exports.addAndLog(12, 43)
             }
         )
     </script>
