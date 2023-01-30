@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script type="module">
-import { add } from "./build/release.js";
-document.body.innerText = add(1, 2);
-</script>
+    <title>My AssemblyScript Example</title>
 </head>
-<body></body>
+<body>
+    <h1>Dice Roller</h1>
+    <form id="dice_roller_form">
+        <label for="dice_text">Dice to roll:</label>
+        <input type="text" placeholder="1d4+4" name="dice_text" />
+    </form>
+    <p>Result: <span id="dice_result"></span></p>
+</body>
 </html>
