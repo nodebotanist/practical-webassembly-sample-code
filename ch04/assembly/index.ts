@@ -14,7 +14,11 @@ function readDiceInput(input: String): Array<i32> {
   let splitForExtra: Array<String> = splitForDie[1].split('+')
   let numberOfDice: i32 = i32.parse(splitForDie[0] as string, 10)
   let numberOnDie: i32 = i32.parse(splitForExtra[0] as string, 10)
-  let extraAdd: i32= i32.parse(splitForExtra[1] as string, 10)
+  let extraAdd: i32 = 0
+
+  if(splitForExtra.length == 2) {
+    extraAdd = i32.parse(splitForExtra[1] as string, 10)
+  }
   return [numberOfDice, numberOnDie, extraAdd]
 }
 
