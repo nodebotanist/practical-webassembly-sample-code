@@ -20,7 +20,8 @@ pub fn greet() {
 
 #[wasm_bindgen]
 pub fn attack_roll(name: &str, dice_roll: i32, health: i32, hurt: bool)-> String {
-    let total: i32 = if hurt { health - dice_roll } else { health + dice_roll };
+    let mut total: i32 = if hurt { health - dice_roll } else { health + dice_roll };
+    if hurt && (health < dice_roll) { total = 0; }
 
     format!("{} took {} {} and has {} health", name, dice_roll, if hurt {"damage"} else {"healing"}, total)
 }
