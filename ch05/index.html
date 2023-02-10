@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My WebAssembly Example</title>
+</head>
+<body>
+    <h1>Attack log entry generator</h1>
+    <span id="attack_log_error"></span>
+    <form id="attack_log_generator">
+        <label for="target_name">Target name:</label>
+        <input type="text" name="target_name" placeholder="(character name)" />
+        <label for="dice_roll_text">Dice Roll:</label>
+        <input type="text" name="dice_roll_text" placeholder="4d4+4" />
+        <label for="health_amount">Target Health:</label>
+        <input type="text" name="health_amount" placeholder="50" />
+        <fieldset>
+            <legend>Heal or Hurt?</legend>
+            <div>
+                <input type="radio" name="heal_or_hurt" id="heal" value="heal" checked />
+                <label for="heal">Heal</label>
+                <input type="radio" name="heal_or_hurt" id="hurt" value="hurt" />
+                <label for="hurt">Hurt</label>
+            </div>
+        </fieldset>
+    </form>
+    <p>Result: <span id="attack_log_result"></span></p>
+    <button id="create_attack_log">Create Log</button>
+    <h1>Dice Roller</h1>
+    <form id="dice_roller_form">
+        <span id="error_message"></span>
+        <label for="dice_text">Dice to roll:</label>
+        <input type="text" placeholder="1d4+4" name="dice_text" />
+    </form>
+    <p>Result: <span id="dice_result"></span></p>
+    <button id="roll_dice">Roll Dice</button>
+    <script src="js/index.js" type="module"></script>
+</body>
+</html>
