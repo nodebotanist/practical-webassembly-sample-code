@@ -1,6 +1,6 @@
 import {roll} from '../roll_dice/release.js'
 import initRustWasm from '../pkg/ch05.js'
-import {greet} from '../pkg/ch05.js'
+import {greet, attack_roll} from '../pkg/ch05.js'
 
 (async () => {
     await initRustWasm()
@@ -31,5 +31,5 @@ import {greet} from '../pkg/ch05.js'
         
     })
 
-    console.log(healOrHurt.value)
+    console.log(attack_roll("Hello", 34, 34, true))
 })()

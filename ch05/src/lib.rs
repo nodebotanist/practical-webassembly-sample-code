@@ -17,3 +17,8 @@ extern {
 pub fn greet() {
     alert("Hello, ch05!");
 }
+
+#[wasm_bindgen]
+pub fn attack_roll(name: &str, dice_roll: i32, health: i32, hurt: bool)-> String {
+    return String::from("Hello")
+}
