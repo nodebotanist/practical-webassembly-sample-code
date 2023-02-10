@@ -1,10 +1,10 @@
 import {roll} from '../roll_dice/release.js'
-import init from '../pkg/ch05.js'
+import initRustWasm from '../pkg/ch05.js'
 import {greet} from '../pkg/ch05.js'
 
 (async () => {
-    await init()
-    greet()
+    await initRustWasm()
+
     const rollDiceButton = document.querySelector('#roll_dice')
     const rollDiceInput = document.querySelector('input[name=dice_text]')
     const errorDiv = document.querySelector('#error_message')
@@ -16,8 +16,20 @@ import {greet} from '../pkg/ch05.js'
             errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
         } else {
             errorDiv.innerHTML = ``
-            let result = roll(rollDiceInput.value)
+            const result = roll(rollDiceInput.value)
             resultSpan.innerHTML = result
         }
     })
+
+    const generateAttackButton = document.querySelector('#create_attack_log')
+    const targetNameInput = document.querySelector('input[name=target_name]')
+    const diceRollInput = document.querySelector('input[name=dice_roll_text]')
+    const targetHealthInput = document.querySelector('input[name=health_amount]')
+    const healOrHurt = document.querySelector('input[name=heal_or_hurt]:checked')
+
+    generateAttackButton.addEventListener('click', () => {
+        
+    })
+
+    console.log(healOrHurt.value)
 })()
