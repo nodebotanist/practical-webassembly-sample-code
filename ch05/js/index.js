@@ -1,6 +1,6 @@
 import {roll} from '../roll_dice/release.js'
 import initRustWasm from '../pkg/ch05.js'
-import {greet, attack_roll} from '../pkg/ch05.js'
+import {attackroll} from '../pkg/ch05.js'
 
 (async () => {
     await initRustWasm()
@@ -41,7 +41,7 @@ import {greet, attack_roll} from '../pkg/ch05.js'
             const health = targetHealthInput.value
             const name = targetNameInput.value
 
-            const result = attack_roll(name, rollResult, health, hurt)
+            const result = attackroll(name, rollResult, health, hurt)
             attackResult.innerHTML = result
         }      
     })

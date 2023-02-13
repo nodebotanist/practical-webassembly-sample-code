@@ -1,5 +1,7 @@
 import { roll } from './roll_dice/release.js'
-import { attackroll } from './pkg/ch05.js'
+import init from './pkg/ch05.js'
+import {attackroll} from './pkg/ch05.js'
+await init()
 
 console.log(roll('5d6+40'))
 
