@@ -14,12 +14,7 @@ extern {
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, ch05!");
-}
-
-#[wasm_bindgen]
-pub fn attack_roll(name: &str, dice_roll: i32, health: i32, hurt: bool)-> String {
+pub fn attackroll(name: &str, dice_roll: i32, health: i32, hurt: bool)-> String {
     let mut total: i32 = if hurt { health - dice_roll } else { health + dice_roll };
     if hurt && (health < dice_roll) { total = 0; }
 
