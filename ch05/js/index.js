@@ -3,8 +3,6 @@ import initRustWasm from '../pkg/ch05.js'
 import {attackroll} from '../pkg/ch05.js'
 
 (async () => {
-    await initRustWasm()
-
     const rollDiceButton = document.querySelector('#roll_dice')
     const rollDiceInput = document.querySelector('input[name=dice_text]')
     const errorDiv = document.querySelector('#error_message')
@@ -20,6 +18,9 @@ import {attackroll} from '../pkg/ch05.js'
             resultSpan.innerHTML = result
         }
     })
+
+    
+    await initRustWasm()
 
     const generateAttackButton = document.querySelector('#create_attack_log')
     const targetNameInput = document.querySelector('input[name=target_name]')
@@ -45,6 +46,4 @@ import {attackroll} from '../pkg/ch05.js'
             attackResult.innerHTML = result
         }      
     })
-
-    console.log(attack_roll("Hello", 39, 36, true))
 })()
