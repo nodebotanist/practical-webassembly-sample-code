@@ -45,6 +45,6 @@ pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> String {
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, ch07!");
+pub fn print_result_to_DOM(diceRoll: String) {
+
 }
