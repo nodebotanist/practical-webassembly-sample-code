@@ -15,7 +15,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[wasm_bindgen]
-struct Result {
+struct RollResult {
     total: i32,
     dice_results: Vec<i32>
 }
@@ -41,7 +41,7 @@ pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> String {
         dice_result.push(roll);
         total += roll;
     }
-    return serde_json::to_string(&Result {
+    return serde_json::to_string(&RollResult {
         dice_results: dice_result,
         total: total + modifier
     }).unwrap();
@@ -59,7 +59,20 @@ pub fn parse_roll(roll_string: &str) -> [i32;3] {
 }
 
 #[wasm_bindgen]
-pub fn print_result_to_dom(dice_roll: String) -> Vec<i32> {
+pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
     let dice_to_roll = parse_roll(&dice_roll);
-    return dice_to_roll.to_vec();
+    let result = roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
+    // Use `web_sys`'s global `window` function to get a handle on the global
+    // window object.
+    let window = web_sys::window().expect("no global `window` exists");
+    let document = window.document().expect("should have a document on window");
+    let body = document.body().expect("document should have a body");
+
+    // Manufacture the element we're gonna append
+    let val = document.create_element("p")?;
+    val.set_text_content(Some(&result));
+
+    body.append_child(&val)?;
+
+    Ok(())
 }
