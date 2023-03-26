@@ -15,15 +15,9 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[wasm_bindgen]
-struct RollResult {
+pub struct RollResult {
     total: i32,
     dice_results: Vec<i32>
-}
-
-
-#[wasm_bindgen]
-extern {
-    fn alert(s: &str);
 }
 
 #[wasm_bindgen]
@@ -33,7 +27,7 @@ pub fn roll_die(die_max: i32) -> i32 {
 }
 
 #[wasm_bindgen]
-pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> String {
+pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> RollResult {
     let mut dice_result: Vec<i32> = Vec::new();
     let mut total: i32 = 0;
     for _n in 0..number_of_dice {
@@ -41,10 +35,10 @@ pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> String {
         dice_result.push(roll);
         total += roll;
     }
-    return serde_json::to_string(&RollResult {
+    return RollResult {
         dice_results: dice_result,
         total: total + modifier
-    }).unwrap();
+    };
 }
 
 pub fn parse_roll(roll_string: &str) -> [i32;3] {
@@ -70,7 +64,7 @@ pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
 
     // Manufacture the element we're gonna append
     let val = document.create_element("p")?;
-    val.set_text_content(Some(&result));
+    val.set_text_content(Some(&format!("Result: {:?} Dice: {:?}", result.total, result.dice_results)));
 
     body.append_child(&val)?;
 
