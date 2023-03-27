@@ -1,10 +1,7 @@
 mod utils;
 
-extern crate serde;
-
 use wasm_bindgen::prelude::*;
 use rand::Rng;
-use serde::{Serialize, Deserialize};
 
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -13,7 +10,7 @@ use serde::{Serialize, Deserialize};
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug)]
 #[wasm_bindgen]
 pub struct RollResult {
     total: i32,
