@@ -1,8 +1,10 @@
 mod utils;
 
-use wasm_bindgen::prelude::*;
-use rand::Rng;
+use std::slice;
 
+use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsValue;
+use rand::Rng;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -15,6 +17,20 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub struct RollResult {
     total: i32,
     dice_results: Vec<i32>
+}
+
+#[wasm_bindgen]
+impl RollResult {
+    pub fn new(dice_results:Vec<i32>, total: i32) -> RollResult {
+        RollResult {
+            dice_results: dice_results,
+            total: total
+        }
+    }
+
+    pub fn get_total(&self) -> i32 {
+        self.total
+    }
 }
 
 #[wasm_bindgen]
@@ -55,9 +71,9 @@ pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
     let result = roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
     // Use `web_sys`'s global `window` function to get a handle on the global
     // window object.
-    let window = web_sys::window().expect("no global `window` exists");
-    let document = window.document().expect("should have a document on window");
-    let body = document.body().expect("document should have a body");
+    let window = web_sys::window().unwrap();
+    let document = window.document().unwrap();
+    let body = document.body().unwrap();
 
     // Manufacture the element we're gonna append
     let val = document.create_element("p")?;
@@ -66,4 +82,10 @@ pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
     body.append_child(&val)?;
 
     Ok(())
+}
+
+#[wasm_bindgen]
+pub fn send_rust_object_back(dice_roll: String) -> RollResult {
+    let dice_to_roll = parse_roll(&dice_roll);
+    return roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
 }

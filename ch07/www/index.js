@@ -12,5 +12,8 @@ rollDiceButton.addEventListener('click', () => {
     } else {
         errorDiv.innerHTML = ``
         wasm.print_result_to_dom(rollDiceInput.value)
+        const rustObject = wasm.send_rust_object_back(rollDiceInput.value)
+        console.log(rustObject)
+        console.log(rustObject.get_total())
     }
 })
