@@ -2,6 +2,7 @@ mod utils;
 
 use std::slice;
 
+use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use rand::Rng;
@@ -12,7 +13,7 @@ use rand::Rng;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct RollResult {
     total: i32,
@@ -88,4 +89,10 @@ pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
 pub fn send_rust_object_back(dice_roll: String) -> RollResult {
     let dice_to_roll = parse_roll(&dice_roll);
     return roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
+}
+
+#[wasm_bindgen]
+pub fn use_serde(dice_roll: String) -> JsValue {
+    let dice_to_roll = parse_roll(&dice_roll);
+    return serde_wasm_bindgen::to_value(&roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2])).unwrap();
 }

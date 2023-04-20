@@ -15,5 +15,7 @@ rollDiceButton.addEventListener('click', () => {
         const rustObject = wasm.send_rust_object_back(rollDiceInput.value)
         console.log(rustObject)
         console.log(rustObject.get_total())
+        const jsonObject = wasm.use_serde(rollDiceInput.value)
+        console.log(jsonObject)
     }
 })
