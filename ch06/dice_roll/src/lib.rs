@@ -8,44 +8,24 @@ pub extern "C" fn roll_dice(){
 
     if args.len() > 1 {
         let roll = args[1].clone();
-        let mut roll_numbers: [i32;3] = [0, 0, 0];
 
-        let roll_split_dice = roll.split_once("d");
-        if roll_split_dice.is_none() 
-            || roll_split_dice.unwrap().0 == "" 
-            || roll_split_dice.unwrap().1 == "" {
-            panic!("Roll {} failed at split at d, make sure roll format is ##d##+##", roll);
-        }
-
-        let number_of_dice = match roll_split_dice.unwrap().0.parse::<i32>() {
-            Ok(s) => s,
-            Err(_e) => panic!("Errored out parsing the first number")
+        let roll_regex = Regex::new(r"^([0-9]+)d([0-9]+)\+([0-9]+)$").unwrap();
+        let regex_captures = match roll_regex.captures(&roll){
+            None => panic!("No regex match"),
+            Some(s) => s
         };
-        println!("{:?}", number_of_dice);
-        roll_numbers[0] = number_of_dice;
-
-        let roll_die_and_mod = roll_split_dice.unwrap().1.split_once("+");
-        if roll_die_and_mod.is_none()
-            || roll_die_and_mod.unwrap().0 == ""
-            || roll_die_and_mod.unwrap().1 == "" {
-            panic!("Roll {} failed at split on +, check that roll format is ##d##+##", roll);
-        }
-
-        let die_max = match roll_die_and_mod.unwrap().0.parse::<i32>(){
-            Ok(s) => s,
-            Err(_e) => panic!("Errored out parsing the second number")
-        };
-        roll_numbers[1] = die_max;
-
-        let modifier = match roll_die_and_mod.unwrap().1.parse::<i32>(){
-            Ok(s) => s,
-            Err(_e) => panic!("Errored out parsing the third number")
-        };
-        roll_numbers[2] = modifier;        
+        let number_of_dice: i32 = regex_captures.get(1).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
+        let die_max = regex_captures.get(2).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
+        let modifier = regex_captures.get(3).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
+        println!("{}d{}+{}", number_of_dice, die_max, modifier);     
 
 
 
     } else {
         panic!("Error: need an argument dice roll ##d##+##");
     }
+}
+
+pub fn calculate_roll(number_of_dice:i32, die_max:i32, modifier: i32) -> Vec<i32> {
+    return Vec::<i32>::new();
 }
