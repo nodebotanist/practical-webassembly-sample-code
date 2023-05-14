@@ -18,7 +18,8 @@ pub extern "C" fn roll_dice(){
         let die_max = regex_captures.get(2).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
         let modifier = regex_captures.get(3).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
         println!("{}d{}+{}", number_of_dice, die_max, modifier);     
-
+        let roll_results = calculate_roll(number_of_dice, die_max, modifier);
+        println!("{:?}", roll_results);
 
 
     } else {
@@ -27,5 +28,17 @@ pub extern "C" fn roll_dice(){
 }
 
 pub fn calculate_roll(number_of_dice:i32, die_max:i32, modifier: i32) -> Vec<i32> {
-    return Vec::<i32>::new();
+    let mut result = Vec::<i32>::new();
+    let mut roll_total = 0;
+
+    let mut rng = thread_rng();
+
+    for _i in 0..number_of_dice {
+        let die_result = rng.gen_range(1..(die_max + 1));
+        result.push(die_result);
+        roll_total += die_result;
+    }
+    roll_total += modifier;
+    result.push(roll_total);
+    result
 }
