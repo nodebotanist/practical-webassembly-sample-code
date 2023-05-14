@@ -20,8 +20,6 @@ pub extern "C" fn roll_dice(){
         println!("{}d{}+{}", number_of_dice, die_max, modifier);     
         let roll_results = calculate_roll(number_of_dice, die_max, modifier);
         println!("{:?}", roll_results);
-
-
     } else {
         panic!("Error: need an argument dice roll ##d##+##");
     }
