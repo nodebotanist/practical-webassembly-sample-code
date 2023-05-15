@@ -1,4 +1,6 @@
 use std::env;
+use std::fs::OpenOptions;
+use std::io::prelude::*;
 use rand::prelude::*;
 use regex::Regex;
 
@@ -17,9 +19,19 @@ pub extern "C" fn roll_dice(){
         let number_of_dice: i32 = regex_captures.get(1).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
         let die_max = regex_captures.get(2).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
         let modifier = regex_captures.get(3).map_or(0, |m| m.as_str().parse::<i32>().unwrap());
-        println!("{}d{}+{}", number_of_dice, die_max, modifier);     
+           
         let roll_results = calculate_roll(number_of_dice, die_max, modifier);
         println!("{:?}", roll_results);
+
+        let mut roll_log_file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .open("./roll-log.txt")
+            .unwrap();
+
+        if let Err(e) = writeln!(roll_log_file, "{:?}", roll_results) {
+            eprintln!("Error writing to file: {:?}", e);
+        }
     } else {
         panic!("Error: need an argument dice roll ##d##+##");
     }
