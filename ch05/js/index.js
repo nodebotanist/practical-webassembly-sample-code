@@ -1,6 +1,5 @@
 import {roll} from '../roll_dice/release.js'
-import initRustWasm from '../pkg/ch05.js'
-import {attackroll} from '../pkg/ch05.js'
+import initRustWasm, {attackroll} from '../pkg/ch05.js'
 
 (async () => {
     const rollDiceButton = document.querySelector('#roll_dice')
