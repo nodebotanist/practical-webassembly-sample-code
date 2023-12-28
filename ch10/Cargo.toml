@@ -1,0 +1,11 @@
+[package]
+name = "ch10"
+version = "0.1.0"
+authors = ["Kassian Wren <the@nodebotani.st>"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.63"
