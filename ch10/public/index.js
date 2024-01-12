@@ -1,24 +1,20 @@
-function createWasmWorker (modulePath) {
+function createWasmWorker() {
     return new Promise((resolve, reject) => {
-        const wasmWorker = new Worker('worker.js')
-        wasmWorker.postMessage({
-            eventType: "INIT",
-            eventData: modulePath
-        })
+        const wasmWorker = new Worker('worker.js', {type: 'module'})
 
         wasmWorker.addEventListener('message', (event) => {
             let {eventType, eventData} = event.data
 
             switch (eventType) {
                 case "INITIALIZED":
-                    console.log("Wasm worker initialized")
-                    resolve()
+                    resolve(wasmWorker)
                     break
                 case "RESULT":
-                    console.log(`Roll result: ${eventData}`)
+                    console.log(eventData)
+                    resolve(`${eventData}`)
                     break
                 case "ERROR":
-                    console.log(`Error running wasm worker: ${eventData}`)
+                    reject(`Error running wasm worker: ${eventData}`)
                     break
             }
         }, false)
@@ -26,10 +22,19 @@ function createWasmWorker (modulePath) {
         wasmWorker.addEventListener('error', (error) => {
             reject(error)
         })
+        
+        wasmWorker.postMessage({
+            eventType: "INIT"
+        })
     })
 }
 
-createWasmWorker("../target/wasm32-unknown-unknown/release/ch10.wasm")
-    .then((value) => {
+createWasmWorker()
+    .then((worker) => {
         console.log("Wasm worker initialized from index.js")
+        worker.postMessage({
+            eventType: "ROLL",
+            eventData: "3d5+4"
+        })
     })
+    .catch((error) => console.log(error))

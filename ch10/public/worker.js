@@ -1,34 +1,33 @@
+import initRustWasm, { roll_dice } from '../pkg/ch10.js'
+
 // create promise for wasm ready state
-let wasmReadyResolve
-let wasmReady = new Promise((resolve) => {
+let wasmReadyResolve, wasmReadyReject
+let wasmReady = new Promise((resolve, reject) => {
     wasmReadyResolve = resolve
+    wasmReadyReject = reject
 }) 
 
-// incoming message handler
-self.addEventListener('message', (event) => {
-    const { eventType, eventData } = event.data
+self.addEventListener('error', (error) => wasmReadyReject(error))
 
+// incoming message handler
+self.addEventListener('message', async (event) => {
+    const { eventType, eventData } = event.data
     switch (eventType) {
         case "INIT":
-            console.log("Initialize wasm")
-            WebAssembly.instantiateStreaming(fetch(eventData), {})
-            .then(instantiatedModule => {
-                const wasmExports = instantiatedModule.instance.exports;
- 
-                // Resolve our exports for when the messages
-                // to execute functions come through
-                wasmReadyResolve(wasmExports);
- 
-                // Send back initialised message to main thread
-                self.postMessage({
-                    eventType: "INITIALIZED",
-                    eventData: Object.keys(wasmExports)
-                });
-     
-            });
+            await initRustWasm()
+            wasmReadyResolve()
+
+            // Send back initialised message to main thread
+            self.postMessage({
+                eventType: "INITIALIZED",
+            })
             break
         case "ROLL":
-            console.log("Roll dice")
+            const rollResult = await roll_dice('2d4')
+            self.postMessage({
+                eventType: "RESULT",
+                eventData: rollResult
+            })
             break
         default:
             throw new Error(`Undefined event type ${eventType} in WebAssembly worker.`)
