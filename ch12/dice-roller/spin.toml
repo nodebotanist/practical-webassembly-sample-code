@@ -1,0 +1,18 @@
+spin_manifest_version = 2
+
+[application]
+name = "dice-roller"
+version = "0.1.0"
+authors = ["Kassian Wren <the@nodebotani.st>"]
+description = ""
+
+[[trigger.http]]
+route = "/..."
+component = "dice-roller"
+
+[component.dice-roller]
+source = "target/wasm32-wasi/release/dice_roller.wasm"
+allowed_outbound_hosts = []
+[component.dice-roller.build]
+command = "cargo build --target wasm32-wasi --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
