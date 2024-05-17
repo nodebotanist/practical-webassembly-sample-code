@@ -98,6 +98,17 @@ fn App() -> Html {
             dice_roll_total += this_dice_roll;
         }
         console::log_1(&format!("Dice roll total: {:?}, Rolls: {:?}", dice_roll_total, rolls).into());
+        let results = document
+            .get_element_by_id("dice_roll_results")
+            .unwrap();
+        console::log_1(&format!("Results div: {:?}", results).into());
+
+        let val = document.create_element("p").unwrap();
+        val.set_text_content(Some(&format!("Dice roll total: {:?}, Rolls: {:?}", dice_roll_total, rolls)));
+    
+        body.append_child(&val);
+
+        
     };
 
     html! {
