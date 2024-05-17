@@ -9,3 +9,5 @@ edition = "2021"
 # this is the development version of Yew
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 web-sys = "0.3.69"
+regex = "1.10.4"
+rand = "0.9.0-alpha.1"
