@@ -13,7 +13,7 @@ use rand::{thread_rng, Rng};
 use regex::Regex;
 
 #[function_component]
-fn App() -> Html {
+fn Dice_roll_form() -> Html {
     let onchange_num_of_dice = move |_:Event| {
         let window = web_sys::window().expect("no global `window` exists");
         let document = window.document().expect("should have a document on window");
@@ -107,12 +107,10 @@ fn App() -> Html {
         val.set_text_content(Some(&format!("Dice roll total: {:?}, Rolls: {:?}", dice_roll_total, rolls)));
     
         body.append_child(&val);
-
-        
     };
 
-    html! {
-        <div>
+    html! {    
+        <>         
             <label for="number_of_dice">{"Number of Dice:"}</label>
             <input type="number" id="num_of_dice" name="number_of_dice" placeholder=1 min="0" max="100" onchange={ onchange_num_of_dice} /><br />
             <label for="number_of_dice">{"Max value of Dice:"}</label>
@@ -120,8 +118,17 @@ fn App() -> Html {
             <label for="number_of_dice">{"Dice Roll Modifier:"}</label>
             <input type="number" id="dice_modifier" name="dice_modifier" placeholder=0 min="-100" max="100" onchange={onchange_modifier} /><br />
             <button id="roll_dice_betton" onclick={on_dice_roll} type="submit" >{"Roll Dice"}</button>
-            <div id ="dice_roll_results"></div>
-        </div>
+            <div id ="dice_roll_results"></div> 
+        </>
+    }
+}
+
+#[function_component]
+fn App() -> Html {
+
+
+    html! {
+        <Dice_roll_form />
     }
 }
 
