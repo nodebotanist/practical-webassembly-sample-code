@@ -14,42 +14,21 @@ use regex::Regex;
 
 #[function_component]
 fn Dice_roll_form() -> Html {
-    let onchange_num_of_dice = move |_:Event| {
-        let window = web_sys::window().expect("no global `window` exists");
-        let document = window.document().expect("should have a document on window");
-        let body = document.body().expect("document should have a body");
-        let input_value = document
-            .get_element_by_id("num_of_dice")
-            .unwrap()
-            .dyn_into::<HtmlInputElement>()
-            .unwrap()
-            .value();
+    let onchange_num_of_dice: Callback<Event> = Callback::from(move |e:Event| {
+        let input_element: HtmlInputElement = e.target_unchecked_into();
+        let input_value = input_element.value();
         console::log_1(&format!("Changed number of dice: {:?}", input_value).into());
-    };
+    });
 
-    let onchange_dice_max_value = move |_:Event| {
-        let window = web_sys::window().expect("no global `window` exists");
-        let document = window.document().expect("should have a document on window");
-        let body = document.body().expect("document should have a body");
-        let input_value = document
-            .get_element_by_id("dice_max_value")
-            .unwrap()
-            .dyn_into::<HtmlInputElement>()
-            .unwrap()
-            .value();
+    let onchange_dice_max_value = move |e:Event| {
+        let input_element: HtmlInputElement = e.target_unchecked_into();
+        let input_value = input_element.value();
         console::log_1(&format!("Changed dice max value: {:?}", input_value).into());
     };
 
-    let onchange_modifier = move |_:Event| {
-        let window = web_sys::window().expect("no global `window` exists");
-        let document = window.document().expect("should have a document on window");
-        let body = document.body().expect("document should have a body");
-        let input_value = document
-            .get_element_by_id("dice_modifier")
-            .unwrap()
-            .dyn_into::<HtmlInputElement>()
-            .unwrap()
-            .value();
+    let onchange_modifier = move |e:Event| {
+        let input_element: HtmlInputElement = e.target_unchecked_into();
+        let input_value = input_element.value();
         console::log_1(&format!("Changed dice modifier: {:?}", input_value).into());
     };
 
