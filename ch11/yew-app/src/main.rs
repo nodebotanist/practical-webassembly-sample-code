@@ -14,7 +14,7 @@ fn App() -> Html {
 
 
     html! {
-        <DiceRollForm />
+        <DiceRollForm default_num_dice=3 default_dice_max_value=6 default_modifier=0 />
     }
 }
 

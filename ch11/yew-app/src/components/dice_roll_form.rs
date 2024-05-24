@@ -5,7 +5,8 @@ use yew::{
     html,
     Event,
     Callback, TargetCast,
-    function_component
+    function_component,
+    Properties
 };
 use crate::web_sys::wasm_bindgen::JsCast;
 extern crate regex;
@@ -31,8 +32,15 @@ fn roll_dice(number_of_dice: i32, dice_max_value: i32, dice_modifier: i32) -> (i
     (dice_roll_total, rolls)
 }
 
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub default_num_dice: i32,
+    pub default_dice_max_value: i32,
+    pub default_modifier: i32
+}
+
 #[function_component(DiceRollForm)]
-pub fn dice_roll_form() -> Html {
+pub fn dice_roll_form(props: &Props) -> Html {
     let onchange_num_of_dice: Callback<Event> = Callback::from(move |e:Event| {
         let input_element: HtmlInputElement = e.target_unchecked_into();
         let input_value = input_element.value();
@@ -96,11 +104,11 @@ pub fn dice_roll_form() -> Html {
     html! {    
         <>         
             <label for="number_of_dice">{"Number of Dice:"}</label>
-            <input type="number" id="num_of_dice" name="number_of_dice" placeholder=1 min="0" max="100" onchange={ onchange_num_of_dice} /><br />
+            <input type="number" id="num_of_dice" name="number_of_dice" placeholder=1 value={props.default_num_dice.to_string().clone()} min="0" max="100" onchange={ onchange_num_of_dice} /><br />
             <label for="number_of_dice">{"Max value of Dice:"}</label>
-            <input type="number" id="dice_max_value" name="dice_max_value" placeholder=1 min="1" max="100" onchange={onchange_dice_max_value} /><br />
+            <input type="number" id="dice_max_value" name="dice_max_value" placeholder=1 value={props.default_dice_max_value.to_string().clone()} min="1" max="100" onchange={onchange_dice_max_value} /><br />
             <label for="number_of_dice">{"Dice Roll Modifier:"}</label>
-            <input type="number" id="dice_modifier" name="dice_modifier" placeholder=0 min="-100" max="100" onchange={onchange_modifier} /><br />
+            <input type="number" id="dice_modifier" name="dice_modifier" placeholder=0 value={props.default_modifier.to_string().clone()} min="-100" max="100" onchange={onchange_modifier} /><br />
             <button id="roll_dice_betton" onclick={on_dice_roll} type="submit" >{"Roll Dice"}</button>
             <div id ="dice_roll_results"></div> 
         </>
