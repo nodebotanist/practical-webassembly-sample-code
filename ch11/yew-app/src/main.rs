@@ -1,16 +1,9 @@
 extern crate web_sys;
-use web_sys::{console, window, HtmlInputElement, MouseEvent};
 use yew::{
     Html,
     html,
-    Event,
-    Callback, TargetCast,
     function_component
 };
-use crate::web_sys::wasm_bindgen::JsCast;
-extern crate regex;
-use rand::{thread_rng, Rng};
-use regex::Regex;
 
 pub mod components;
 
