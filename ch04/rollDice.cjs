@@ -8,7 +8,9 @@ const wasm = import('./build/release.js').then((instance) => {
     if( rollInput.match(verificationRegExp) == null ) {
         console.log('Invalid roll- needs to be #d#(+#)')
     } else {
-        const result = instance.roll(rollInput)
-        console.log(result)
+        const numbers= instance.readDiceInput(rollInput)
+        console.log(numbers)
+        const rollResult = instance.rollDie(numbers[1])
+        console.log(rollResult)
     }
 })
