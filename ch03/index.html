@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First WebAssembly Project</title>
+</head>
+<body>
+    <script type="module">
+        import initRustWasm from './pkg/hello_wasm.js'
+        import { hello_world } from './pkg/hello_wasm.js'
+
+        (async () => {
+            await initRustWasm()
+            hello_world()
+        })()
+    </script>
+</body>
+</html>
