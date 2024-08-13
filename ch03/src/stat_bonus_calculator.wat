@@ -23,11 +23,7 @@
                 ;; create a constant for the number of bits to shift
                 ;; we always want to shift by one, so we use a constant
                 i32.const 1
-                ;; perform and store the bit shift:
-                ;; pops the shift-by value off the stack
-                ;; pops the stat_modifier off the stack
-                ;; does the shift the pushes the result 
-                ;; of the right shift onto the stack
+                ;; perform and store the bit shift
                 ;; which we then store in a local variable
                 i32.shr_u
                 local.set $result
@@ -49,6 +45,7 @@
                 local.set $result
             )
         )
+        ;; subtract 5 from the result and return
         local.get $result
         i32.const 5
         i32.sub
