@@ -1,5 +1,5 @@
-const fs = require('node:fs')
-const readline = require('readline')
+const fs = require(`node:fs`)
+const readline = require(`readline`)
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -11,10 +11,10 @@ const wasmBuffer = fs.readFileSync(`../build/stat_bonus_calculator.wasm`)
 
 WebAssembly.instantiate(wasmBuffer).then(
     (wasm) => {
-        console.log("Enter a stat amount")
+        console.log(`Enter a stat amount`)
         rl.on(`line`, (line) => {
             if(isNaN(line)){
-                console.log("Please enter a number")
+                console.log(`Please enter a number (press CTRL-C to exit):`)
             } else {
                 console.log(`Result: ${wasm.instance.exports.calculate_stat_bonus(parseInt(line))}`)
             }
