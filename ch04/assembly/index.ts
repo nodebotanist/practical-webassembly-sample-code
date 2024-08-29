@@ -1,12 +1,12 @@
 // The entry file of your WebAssembly module.
 
-export function readDiceInput(input: String): Array<i32> {
+export function parse_roll_string(input: String): Array<i32> {
   // split '##d##+##' into ['##', '##+##']
   let splitForNumOfDice: Array<String> = input.split('d', 10)
   // split '##+##' into ['##', '##'] 
   let splitForModifier: Array<String> = splitForNumOfDice[1].split('+')
   // parse '##' for # of dice to an i32
-  let numberOfDice: i32 = i32.parse(splitForDie[0] as string, 10)
+  let numberOfDice: i32 = i32.parse(splitForNumOfDice[0] as string, 10)
   // parse '##' for max value of dice to an i32
   let diceMaxValue: i32 = i32.parse(splitForModifier[0] as string, 10)
   
@@ -21,7 +21,7 @@ export function readDiceInput(input: String): Array<i32> {
   return [numberOfDice, diceMaxValue, modifier]
 }
 
-export function rollDie(dieMax: i32): i32 {
+export function roll_die(dieMax: i32): i32 {
   // Step 1: get a random f64 between 0 and 1
   // Step 2: multiply it by dieMax, which is cast to a f64 as well
   // Step 3: get the ceiling integer value of the multiplied f64 values and cast it to i32

@@ -1,4 +1,4 @@
-import {readDiceInput, rollDie} from '../build/release.js'
+import {parse_roll_string, roll_die} from '../build/release.js'
 
 (() => {
     const rollDiceButton = document.querySelector('#roll_dice')
@@ -12,8 +12,8 @@ import {readDiceInput, rollDie} from '../build/release.js'
             errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
         } else {
             errorDiv.innerHTML = ``
-            let rollNumbers = readDiceInput(rollDiceInput.value)
-            let result = rollDie(rollNumbers[1])
+            let rollNumbers = parse_roll_string(rollDiceInput.value)
+            let result = roll_die(rollNumbers[1])
             resultSpan.innerHTML = result
         }
     })
