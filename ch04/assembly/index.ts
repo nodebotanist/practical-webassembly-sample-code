@@ -3,8 +3,13 @@
 export function parse_roll_string(input: String): Array<i32> {
   // split '##d##+##' into ['##', '##+##']
   let splitForNumOfDice: Array<String> = input.split('d', 10)
-  // split '##+##' into ['##', '##'] 
-  let splitForModifier: Array<String> = splitForNumOfDice[1].split('+')
+  // split '##+##' into ['##', '##'] OR '##-##' into ["##", '-##']
+  let delimiter = '+'
+  if(input.indexOf('+') === -1) {
+    delimiter = '-'
+  }
+  console.log("Delimiter " + delimiter)
+  let splitForModifier: Array<String> = splitForNumOfDice[1].split(delimiter)
   // parse '##' for # of dice to an i32
   let numberOfDice: i32 = i32.parse(splitForNumOfDice[0] as string, 10)
   // parse '##' for max value of dice to an i32
@@ -15,6 +20,9 @@ export function parse_roll_string(input: String): Array<i32> {
   if(splitForModifier.length == 2) {
     // parse '##' for modifier into an i32
     modifier = i32.parse(splitForModifier[1] as string, 10)
+    if(delimiter === '-') {
+      modifier = -modifier
+    }
   }
 
   // return the parsed i32 values
