@@ -1,6 +1,6 @@
-import {readDiceInput, rollDie} from '../lib/ch04/release.js'
+import init, {roll_dice} from '../pkg/roll_checker.js'
 
-(() => {
+init().then(() => {
     const rollDiceButton = document.querySelector('#roll_dice')
     const rollDiceInput = document.querySelector('input[name=dice_text]')
     const errorDiv = document.querySelector('#error_message')
@@ -12,9 +12,8 @@ import {readDiceInput, rollDie} from '../lib/ch04/release.js'
             errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
         } else {
             errorDiv.innerHTML = ``
-            let rollNumbers = readDiceInput(rollDiceInput.value)
-            let result = rollDie(rollNumbers[1])
+            let result = roll_dice(rollDiceInput.value)
             resultSpan.innerHTML = result
         }
     })
-})()
+})
