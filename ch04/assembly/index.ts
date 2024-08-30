@@ -8,7 +8,6 @@ export function parse_roll_string(input: String): Array<i32> {
   if(input.indexOf('+') === -1) {
     delimiter = '-'
   }
-  console.log("Delimiter " + delimiter)
   let splitForModifier: Array<String> = splitForNumOfDice[1].split(delimiter)
   // parse '##' for # of dice to an i32
   let numberOfDice: i32 = i32.parse(splitForNumOfDice[0] as string, 10)
