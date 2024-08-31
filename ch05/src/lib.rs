@@ -11,11 +11,8 @@ extern "C" {
     fn parse_roll_string(roll_string: &str) -> js_sys::Array;
 }
 
-macro_rules! console_log {
-    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
-}
-
-fn validate_roll_string(roll_string: &str) -> bool {
+#[wasm_bindgen]
+pub fn validate_roll_string(roll_string: &str) -> bool {
     let reg_exp = js_sys::RegExp::new(r"^[0-9]+[d][0-9]+((\+|-)[0-9]+)?$", "");
     reg_exp.test(roll_string)
 }
