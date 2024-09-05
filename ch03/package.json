@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-ch03": "wat2wasm src/stat_bonus_calculator.wat -o build/stat_bonus_calculator.wasm"
+    "build-ch03": "wat2wasm src/stats_calc.wat -o build/stats_calc.wasm"
   },
   "keywords": [],
   "author": "",
