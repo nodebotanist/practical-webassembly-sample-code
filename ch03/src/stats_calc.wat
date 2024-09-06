@@ -1,17 +1,17 @@
 (module
-    (func $calculate_stat_bonus (param $stat_modifier i32) (result i32)
+    (func $calc_stat_mod (param $stat_modifier i32) (result i32)
         ;; create local to store result in
         (local $result i32)
         
         ;; load our stat modifier onto the stack
         local.get $stat_modifier
-        ;; load zero onto the stack for comparison
+        ;; load 10 (lowest stat value w/zero modifier) onto the stack for comparison
         i32.const 0
-        ;; check if the value is negative
-        i32.lt_s ;; if negative, 1 on the stack, otherwise 0
+        ;; check if the value is < 10, which would make the modifier negative
+        i32.lt_s ;; if < 10, 1 on the stack, otherwise 0
         ;; use an if...then statement to branch on negative
         (if
-            (then ;; value is negative
+            (then ;; modifier is negative
                 ;; get the value on the stack
                 local.get $stat_modifier
                 ;; convert to f32
@@ -36,7 +36,7 @@
                 i32.sub 
                 local.set $result
             )
-            (else ;; value is positive
+            (else ;; modifier is positive
                 ;; all that needs to be done here is the bit shift
                 ;; part
                 local.get $stat_modifier
@@ -45,13 +45,13 @@
                 local.set $result
             )
         )
-        ;; subtract 5 from the result and return
+        ;; subtract 5 from computed bonus and return
         local.get $result
         i32.const 5
         i32.sub
     )
 
-    ;; export the calculate_stat_bonus function so it 
+    ;; export the calc_stat_modifier function so it 
     ;; can be used by Javascript
-    (export "calculate_stat_bonus" (func $calculate_stat_bonus))
+    (export "calcStatMod" (func $calc_stat_mod))
 )

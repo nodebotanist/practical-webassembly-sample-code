@@ -1,5 +1,5 @@
 // placeholder for wasm function
-let calcStatBonus;
+let calcStatMod;
 
 // get our HTML handles
 // the stat inputs
@@ -18,31 +18,32 @@ let statWisBonus = document.querySelector('#stat_wis_bonus')
 let statChaBonus = document.querySelector('#stat_cha_bonus')
 
 // fetch and instantiate the wasm
-WebAssembly.instantiateStreaming(fetch(`build/stat_bonus_calculator.wasm`)).then(
+WebAssembly.instantiateStreaming(await fetch(`build/stats_calc.wasm`)).then(
     // this callback is run when the wasm instance is ready
     (wasm) => {
+        console.log(wasm)
         // assigns the wasm function to a JS variable declared in the outmost scope
-        calcStatBonus = wasm.instance.exports.calculate_stat_bonus
-        calcStatBonuses()
+        calcStatMod = wasm.instance.exports.calcStatMod
+        calcStatMods()
     }
 )
 
-function calcStatBonuses() {
+function calcStatMods() {
     // calculate the bonus mods with wasm if ready
-    if(calcStatBonus) {
-        statStrBonus.innerHTML = calcStatBonus(statStr.value).toString()
-        statDexBonus.innerHTML = calcStatBonus(statDex.value).toString()
-        statConBonus.innerHTML = calcStatBonus(statCon.value).toString()
-        statIntBonus.innerHTML = calcStatBonus(statInt.value).toString()
-        statWisBonus.innerHTML = calcStatBonus(statWis.value).toString()
-        statChaBonus.innerHTML = calcStatBonus(statCha.value).toString()
+    if(calcStatMod) {
+        statStrBonus.innerHTML = calcStatMod(statStr.value).toString()
+        statDexBonus.innerHTML = calcStatMod(statDex.value).toString()
+        statConBonus.innerHTML = calcStatMod(statCon.value).toString()
+        statIntBonus.innerHTML = calcStatMod(statInt.value).toString()
+        statWisBonus.innerHTML = calcStatMod(statWis.value).toString()
+        statChaBonus.innerHTML = calcStatMod(statCha.value).toString()
     }
 }
 
 // set a listener to each input to calculate stat bonuses on change
-statStr.addEventListener('change', calcStatBonuses)
-statDex.addEventListener('change', calcStatBonuses)
-statCon.addEventListener('change', calcStatBonuses)
-statInt.addEventListener('change', calcStatBonuses)
-statWis.addEventListener('change', calcStatBonuses)
-statCha.addEventListener('change', calcStatBonuses)
+statStr.addEventListener('change', calcStatMods)
+statDex.addEventListener('change', calcStatMods)
+statCon.addEventListener('change', calcStatMods)
+statInt.addEventListener('change', calcStatMods)
+statWis.addEventListener('change', calcStatMods)
+statCha.addEventListener('change', calcStatMods)
