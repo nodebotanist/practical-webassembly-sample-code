@@ -1,9 +1,11 @@
+// CODE CHANGES PART 1 START HERE
 import init, {roll_dice, validate_roll_string} from '../pkg/roll_checker.js'
+// CODE CHANGES PART 1 END HERE
 
 // placeholder for wasm function
 let calcStatBonus;
 // fetch and instantiate the wasm
-WebAssembly.instantiateStreaming(fetch(`lib/stat_bonus_calculator.wasm`)).then(
+WebAssembly.instantiateStreaming(fetch(`lib/stats_calc.wasm`)).then(
     // this callback is run when the wasm instance is ready
     (wasm) => {
         // assigns the wasm function to a JS variable declared in the outmost scope
@@ -35,18 +37,27 @@ const rollDiceInput = document.querySelector('input[name=dice_text]')
 const errorDiv = document.querySelector('#error_message')
 const resultSpan = document.querySelector('#dice_result')
 
-function calcStatBonuses() {
+function calcStatMods() {
     // calculate the bonus mods with wasm if ready
-    if(calcStatBonus) {
-        statStrBonus.innerHTML = calcStatBonus(statStr.value).toString()
-        statDexBonus.innerHTML = calcStatBonus(statDex.value).toString()
-        statConBonus.innerHTML = calcStatBonus(statCon.value).toString()
-        statIntBonus.innerHTML = calcStatBonus(statInt.value).toString()
-        statWisBonus.innerHTML = calcStatBonus(statWis.value).toString()
-        statChaBonus.innerHTML = calcStatBonus(statCha.value).toString()
+    if(calcStatMod) {
+        statStrBonus.innerHTML = calcStatMod(statStr.value).toString()
+        statDexBonus.innerHTML = calcStatMod(statDex.value).toString()
+        statConBonus.innerHTML = calcStatMod(statCon.value).toString()
+        statIntBonus.innerHTML = calcStatMod(statInt.value).toString()
+        statWisBonus.innerHTML = calcStatMod(statWis.value).toString()
+        statChaBonus.innerHTML = calcStatMod(statCha.value).toString()
     }
 }
 
+// set a listener to each input to calculate stat bonuses on change
+statStr.addEventListener('change', calcStatMods)
+statDex.addEventListener('change', calcStatMods)
+statCon.addEventListener('change', calcStatMods)
+statInt.addEventListener('change', calcStatMods)
+statWis.addEventListener('change', calcStatMods)
+statCha.addEventListener('change', calcStatMods)
+
+// CODE CHANGES PART 2 START HERE
 function rollDice() {
     if( !validate_roll_string(rollDiceInput.value) ) {
         errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
@@ -56,13 +67,6 @@ function rollDice() {
         resultSpan.innerHTML = result
     }
 }
-
-// set a listener to each input to calculate stat bonuses on change
-statStr.addEventListener('change', calcStatBonuses)
-statDex.addEventListener('change', calcStatBonuses)
-statCon.addEventListener('change', calcStatBonuses)
-statInt.addEventListener('change', calcStatBonuses)
-statWis.addEventListener('change', calcStatBonuses)
-statCha.addEventListener('change', calcStatBonuses)
+// CODE CHANGES PART 2 END HERE
 
 rollDiceButton.addEventListener('click', rollDice)
