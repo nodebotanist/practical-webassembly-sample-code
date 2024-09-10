@@ -1,5 +1,7 @@
 // CODE CHANGES PART 1 START HERE
 import init, {roll_dice, validate_roll_string} from '../pkg/roll_checker.js'
+
+init() // sets up the dice roller wasm
 // CODE CHANGES PART 1 END HERE
 
 // placeholder for wasm function
@@ -10,11 +12,9 @@ WebAssembly.instantiateStreaming(fetch(`lib/stats_calc.wasm`)).then(
     (wasm) => {
         // assigns the wasm function to a JS variable declared in the outmost scope
         calcStatBonus = wasm.instance.exports.calculate_stat_bonus
-        calcStatBonuses()
+        calcStatMods()
     }
 )
-
-init() // sets up the dice roller wasm
 
 // get our HTML handles
 // the stat inputs
@@ -39,13 +39,13 @@ const resultSpan = document.querySelector('#dice_result')
 
 function calcStatMods() {
     // calculate the bonus mods with wasm if ready
-    if(calcStatMod) {
-        statStrBonus.innerHTML = calcStatMod(statStr.value).toString()
-        statDexBonus.innerHTML = calcStatMod(statDex.value).toString()
-        statConBonus.innerHTML = calcStatMod(statCon.value).toString()
-        statIntBonus.innerHTML = calcStatMod(statInt.value).toString()
-        statWisBonus.innerHTML = calcStatMod(statWis.value).toString()
-        statChaBonus.innerHTML = calcStatMod(statCha.value).toString()
+    if(calcStatBonus) {
+        statStrBonus.innerHTML = calcStatBonus(statStr.value).toString()
+        statDexBonus.innerHTML = calcStatBonus(statDex.value).toString()
+        statConBonus.innerHTML = calcStatBonus(statCon.value).toString()
+        statIntBonus.innerHTML = calcStatBonus(statInt.value).toString()
+        statWisBonus.innerHTML = calcStatBonus(statWis.value).toString()
+        statChaBonus.innerHTML = calcStatBonus(statCha.value).toString()
     }
 }
 
