@@ -1,1 +1,0 @@
-/home/nodebotanist/book/practical-webassembly-sample-code/ch06/wasmtime-demo/target/wasm32-unknown-unknown/release/libwasmtime_demo.rlib: /home/nodebotanist/book/practical-webassembly-sample-code/ch06/wasmtime-demo/src/lib.rs
