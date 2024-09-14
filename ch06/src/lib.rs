@@ -19,7 +19,7 @@ pub fn validate_roll_string(roll_string: &str) -> bool {
     }
 }
 
-fn roll_die(die_max: i32) -> i32 {
+pub fn roll_die(die_max: i32) -> i32 {
     // generate a random number between 1 and die_max inclusively
     let mut rand:[u8;1] = [0];
     let random_result = getrandom(&mut rand);
@@ -63,6 +63,15 @@ pub fn roll_dice(roll_string: &str) -> Result<i32, JsError> {
 
     // return the total
     Ok(total)
+}
+
+pub fn roll_dice_from_numbers(number_of_dice:i32, die_max:i32, modifier:i32) -> i32{
+    let mut result:i32 = 0;
+    for num in 1..number_of_dice {
+        result += roll_die(die_max);
+    }
+    result += modifier;
+    result
 }
 
 #[wasm_bindgen]
