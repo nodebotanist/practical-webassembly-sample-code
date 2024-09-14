@@ -1,6 +1,8 @@
-import init, {roll_dice, validate_roll_string} from '../pkg/roll_checker.js'
-
-init() // sets up the dice roller wasm
+import init, {roll_dice, roll_dice_log, validate_roll_string} from '../pkg/roll_checker.js'
+import { parse_roll_string } from '../lib/ch04/release.js'
+init({
+    parse_roll_string
+}) // sets up the dice roller wasm
 
 // placeholder for wasm function
 let calcStatBonus;
@@ -61,6 +63,7 @@ function rollDice() {
     } else {
         errorDiv.innerHTML = ``
         let result = roll_dice(rollDiceInput.value)
+        roll_dice_log(rollDiceInput.value)
         resultSpan.innerHTML = result
     }
 }

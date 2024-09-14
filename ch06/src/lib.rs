@@ -76,3 +76,7 @@ pub fn roll_dice_log(roll_string: &str) {
         Err(_) => panic!("Error getting the roll result")
     }
 }
+
+pub fn main() {
+
+}
