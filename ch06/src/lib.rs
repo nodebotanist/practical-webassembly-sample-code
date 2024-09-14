@@ -12,7 +12,6 @@ extern "C" {
 
 #[wasm_bindgen]
 pub fn validate_roll_string(roll_string: &str) -> bool {
-    // upgrade this to use a rust regex
     let reg_exp = Regex::new(r"^[0-9]+[d][0-9]+((\+|-)[0-9]+)?$").unwrap();
     match reg_exp.captures(roll_string) {
         None => false,
@@ -69,12 +68,11 @@ pub fn roll_dice(roll_string: &str) -> Result<i32, JsError> {
 #[wasm_bindgen]
 pub fn roll_dice_log(roll_string: &str) {
     let result = roll_dice(roll_string);
+    // console log
+    use web_sys::console;
 
     match result {
         Ok(roll_result) => console::log_1(&format!("Roll: {:?}, Result: {:?}", roll_string, roll_result).into()),
         Err(_) => panic!("Error getting the roll result")
     }
-    // console log result
-    use web_sys::console;
-    
 }

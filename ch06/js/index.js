@@ -1,8 +1,6 @@
-// CODE CHANGES PART 1 START HERE
 import init, {roll_dice, validate_roll_string} from '../pkg/roll_checker.js'
 
 init() // sets up the dice roller wasm
-// CODE CHANGES PART 1 END HERE
 
 // placeholder for wasm function
 let calcStatBonus;
@@ -57,7 +55,6 @@ statInt.addEventListener('change', calcStatMods)
 statWis.addEventListener('change', calcStatMods)
 statCha.addEventListener('change', calcStatMods)
 
-// CODE CHANGES PART 2 START HERE
 function rollDice() {
     if( !validate_roll_string(rollDiceInput.value) ) {
         errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
@@ -67,6 +64,5 @@ function rollDice() {
         resultSpan.innerHTML = result
     }
 }
-// CODE CHANGES PART 2 END HERE
 
 rollDiceButton.addEventListener('click', rollDice)
