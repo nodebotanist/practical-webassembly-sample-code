@@ -8,8 +8,5 @@ pub fn main() {
 #[no_mangle]
 pub extern "C" fn roll_dice_log() {
     let result = roll_checker::roll_die(25);
-    match result {
-        Err(_) => { println!("Error"); }
-        Ok(answer) => { println!("Result of 7d6+5: {:?}", answer); }
-    }
+    println!("Result of 7d6+5: {:?}", result)
 }
