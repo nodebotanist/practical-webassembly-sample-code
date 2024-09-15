@@ -51,15 +51,7 @@ pub fn roll_dice(roll_string: &str) -> Result<i32, JsError> {
     let modifier = roll_numbers.get(2).as_f64().unwrap() as i32;
 
     // start a running total of the dice roll
-    let mut total = 0;
-
-    // roll the dice
-    for _ in 0..number_of_dice {
-        total += roll_die(die_max);
-    }
-
-    // add the modifier
-    total += modifier;
+    let total = roll_dice_from_numbers(number_of_dice, die_max, modifier);
 
     // return the total
     Ok(total)
