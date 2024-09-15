@@ -1,98 +1,104 @@
 mod utils;
 
-use std::slice;
-
-use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsValue;
-use rand::Rng;
+use getrandom::getrandom;
+use regex::Regex;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
-#[derive(Serialize, Deserialize)]
+// NEW CODE 1
+#[derive(Debug)]
 #[wasm_bindgen]
 pub struct RollResult {
-    total: i32,
+    pub total: i32,
     dice_results: Vec<i32>
 }
 
-#[wasm_bindgen]
 impl RollResult {
-    pub fn new(dice_results:Vec<i32>, total: i32) -> RollResult {
-        RollResult {
-            dice_results: dice_results,
-            total: total
-        }
+    pub fn get_dice_rolls(&self) -> String {
+        format!("{:?}", self.dice_results)
     }
+}
+// END NEW CODE 1
 
-    pub fn get_total(&self) -> i32 {
-        self.total
-    }
+#[wasm_bindgen(module = "/lib/ch04/release.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = "parse_roll_string")]
+    fn parse_roll_string(roll_string: &str) -> js_sys::Array;
 }
 
 #[wasm_bindgen]
+pub fn validate_roll_string(roll_string: &str) -> bool {
+    let reg_exp = Regex::new(r"^[0-9]+[d][0-9]+((\+|-)[0-9]+)?$").unwrap();
+    match reg_exp.captures(roll_string) {
+        None => false,
+        _ => true
+    }
+}
+
 pub fn roll_die(die_max: i32) -> i32 {
-    let mut rng = rand::thread_rng();
-    return rng.gen_range(1..(die_max +1))
+    // generate a random number between 1 and die_max inclusively
+    let mut rand:[u8;1] = [0];
+    let random_result = getrandom(&mut rand);
+    match random_result {
+        Ok(()) => {
+            // rand[0] is now a random u8. To get the range, we divide by the max value and multiply by die_max
+            let ratio = rand[0] as f32 / u8::MAX as f32;
+            let mut result = (ratio * die_max as f32).ceil() as i32;
+            if result == 0 { result = 1; }
+            result
+        }
+        Err(_) => panic!("Error getting random bytes")
+    }
+
 }
 
 #[wasm_bindgen]
-pub fn roll_dice(number_of_dice: i32, die_max: i32, modifier: i32) -> RollResult {
-    let mut dice_result: Vec<i32> = Vec::new();
-    let mut total: i32 = 0;
-    for _n in 0..number_of_dice {
+pub fn roll_dice(roll_string: &str) -> Result<RollResult, JsError> {
+    // make sure the roll is valid
+    if !validate_roll_string(roll_string) {
+        // throw the error out to JS
+        return Err(JsError::new(&format!("Invalid roll string: {:?}", roll_string).to_owned()));
+    }
+
+    // parse the roll 
+    let roll_numbers = parse_roll_string(&roll_string);
+    // use the JsArray get function to get the values, then parse into f64, saved as i32 values
+    let number_of_dice = roll_numbers.get(0).as_f64().unwrap() as i32;
+    let die_max = roll_numbers.get(1).as_f64().unwrap() as i32;
+    let modifier = roll_numbers.get(2).as_f64().unwrap() as i32;
+
+    let result = roll_dice_from_numbers(number_of_dice, die_max, modifier);
+
+    // return the result
+    Ok(result)
+}
+
+pub fn roll_dice_from_numbers(number_of_dice:i32, die_max:i32, modifier:i32) -> RollResult {
+    let mut result:i32 = 0;
+    let mut rolls: Vec<i32> = Vec::new();
+    for _ in 1..number_of_dice {
         let roll = roll_die(die_max);
-        dice_result.push(roll);
-        total += roll;
+        result += roll;
+        rolls.push(roll);
     }
-    return RollResult {
-        dice_results: dice_result,
-        total: total + modifier
-    };
-}
-
-pub fn parse_roll(roll_string: &str) -> [i32;3] {
-    let roll_split = roll_string.split(['d', '+']);
-    let mut result: [i32;3] = [0, 0, 0];
-    let mut i: usize = 0;
-    for dice in roll_split {
-        result[i] = dice.parse::<i32>().unwrap();
-        i+=1;
+    result += modifier;
+    RollResult {
+        total: result,
+        dice_results: rolls
     }
-    return result;
 }
 
 #[wasm_bindgen]
-pub fn print_result_to_dom(dice_roll: String) -> Result<(), JsValue> {
-    let dice_to_roll = parse_roll(&dice_roll);
-    let result = roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
-    // Use `web_sys`'s global `window` function to get a handle on the global
-    // window object.
-    let window = web_sys::window().unwrap();
-    let document = window.document().unwrap();
-    let body = document.body().unwrap();
+pub fn roll_dice_log(roll_string: &str) {
+    let result = roll_dice(roll_string);
+    // console log
+    use web_sys::console;
 
-    // Manufacture the element we're gonna append
-    let val = document.create_element("p")?;
-    val.set_text_content(Some(&format!("Result: {:?} Dice: {:?}", result.total, result.dice_results)));
-
-    body.append_child(&val)?;
-
-    Ok(())
+    match result {
+        Ok(roll_result) => console::log_1(&format!("Roll: {:?}, Result: {:?}", roll_string, roll_result).into()),
+        Err(_) => panic!("Error getting the roll result")
+    }
 }
 
-#[wasm_bindgen]
-pub fn send_rust_object_back(dice_roll: String) -> RollResult {
-    let dice_to_roll = parse_roll(&dice_roll);
-    return roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2]);
-}
+pub fn main() {
 
-#[wasm_bindgen]
-pub fn use_serde(dice_roll: String) -> JsValue {
-    let dice_to_roll = parse_roll(&dice_roll);
-    return serde_wasm_bindgen::to_value(&roll_dice(dice_to_roll[0], dice_to_roll[1], dice_to_roll[2])).unwrap();
 }
