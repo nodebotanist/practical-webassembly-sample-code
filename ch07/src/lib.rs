@@ -13,8 +13,18 @@ pub struct RollResult {
 }
 
 impl RollResult {
-    pub fn get_dice_rolls(&self) -> String {
-        format!("{:?}", self.dice_results)
+    pub fn new(total:i32, dice_results:Vec<i32>) -> RollResult {
+        RollResult {
+            total: total,
+            dice_results: dice_results
+        }
+    }
+   
+    pub fn get(&self) -> RollResult {
+        return RollResult {
+            total: self.total,
+            dice_results: self.dice_results.clone()
+        }
     }
 }
 // END NEW CODE 1
@@ -24,6 +34,8 @@ extern "C" {
     #[wasm_bindgen(js_name = "parse_roll_string")]
     fn parse_roll_string(roll_string: &str) -> js_sys::Array;
 }
+
+
 
 #[wasm_bindgen]
 pub fn validate_roll_string(roll_string: &str) -> bool {
@@ -81,10 +93,7 @@ pub fn roll_dice_from_numbers(number_of_dice:i32, die_max:i32, modifier:i32) -> 
         rolls.push(roll);
     }
     result += modifier;
-    RollResult {
-        total: result,
-        dice_results: rolls
-    }
+    RollResult::new(result, rolls)
 }
 
 #[wasm_bindgen]

@@ -4,6 +4,8 @@ init({
     parse_roll_string
 }) // sets up the dice roller wasm
 
+import * as wasm from "../pkg/roll_checker_bg.js"
+
 // placeholder for wasm function
 let calcStatBonus;
 // fetch and instantiate the wasm
@@ -57,14 +59,14 @@ statInt.addEventListener('change', calcStatMods)
 statWis.addEventListener('change', calcStatMods)
 statCha.addEventListener('change', calcStatMods)
 
-function rollDice() {
+async function rollDice() {
     if( !validate_roll_string(rollDiceInput.value) ) {
         errorDiv.innerHTML = `<p>Invalid input: must be in the format [number]d[number], with an optional +[number]</p>`
     } else {
         errorDiv.innerHTML = ``
-        let result = roll_dice(rollDiceInput.value)
-        roll_dice_log(rollDiceInput.value)
-        resultSpan.innerHTML = result
+        let result = await roll_dice(rollDiceInput.value)
+
+        resultSpan.innerHTML = `${result.total}`
     }
 }
 
