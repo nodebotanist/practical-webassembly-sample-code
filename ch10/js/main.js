@@ -1,5 +1,3 @@
-import { validate_roll_string } from "../lib/ch07/roll_checker.js"
-
 // get our HTML handles
 // the stat inputs
 let statStr = document.querySelector('[name=stat_str]')
