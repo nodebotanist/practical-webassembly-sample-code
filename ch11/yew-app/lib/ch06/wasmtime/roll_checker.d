@@ -1,0 +1,1 @@
+/home/nodebotanist/book/practical-webassembly-sample-code/ch06/target/wasm32-wasi/debug/roll_checker.wasm: /home/nodebotanist/book/practical-webassembly-sample-code/ch06/src/lib.rs /home/nodebotanist/book/practical-webassembly-sample-code/ch06/src/utils.rs
