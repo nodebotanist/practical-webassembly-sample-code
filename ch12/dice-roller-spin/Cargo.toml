@@ -1,0 +1,17 @@
+[package]
+name = "dice-roller-spin"
+authors = ["Kassian Wren <the@nodebotani.st>"]
+description = ""
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1"
+spin-sdk = "3.0.1"
+roll-checker = { path = "../wasm" }
+regex="1"
+
+[workspace]
