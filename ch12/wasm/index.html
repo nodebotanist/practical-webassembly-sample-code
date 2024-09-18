@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My AssemblyScript Example</title>
+</head>
+<body>
+    <h1>Stat Block:</h1>
+    <div id="stat_block">
+        <div class="stat_block_stat">
+            <label for="stat_str">Strength (STR):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_str" />
+            <label>Bonus:</label>
+            <span id="stat_str_bonus"></span> 
+        </div>
+        <div class="stat_block_stat">
+            <label for="stat_dex">Dexterity (DEX):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_dex" />
+            <label>Bonus:</label>
+            <span id="stat_dex_bonus"></span> 
+        </div>
+        <div class="stat_block_stat">
+            <label for="stat_con">Constitution (CON):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_con" />
+            <label>Bonus:</label>
+            <span id="stat_con_bonus"></span> 
+        </div>
+        <div class="stat_block_stat">
+            <label for="stat_int">Intelligence (INT):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_int" />
+            <label>Bonus:</label>
+            <span id="stat_int_bonus"></span> 
+        </div>
+        <div class="stat_block_stat">
+            <label for="stat_wis">Wisdom (WIS):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_wis" />
+            <label>Bonus:</label>
+            <span id="stat_wis_bonus"></span> 
+        </div>
+        <div class="stat_block_stat">
+            <label for="stat_cha">Charisma (CHA):</label>
+            <input type="number" min="-50" max="50" value="10" name="stat_cha" />
+            <label>Bonus:</label>
+            <span id="stat_cha_bonus"></span> 
+        </div>
+    </div>
+    <h1>Dice Roller:</h1>
+    <form id="dice_roller_form">
+        <span id="error_message"></span>
+        <label for="dice_text">Dice to roll:</label>
+        <input type="text" placeholder="1d4+4" name="dice_text" />
+    </form>
+    <p>Result: <span id="dice_result"></span></p>
+    <button id="roll_dice">Roll Dice</button>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
