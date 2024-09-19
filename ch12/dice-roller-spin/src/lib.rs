@@ -33,7 +33,6 @@ fn handle_dice_roller_spin(req: Request) -> anyhow::Result<impl IntoResponse> {
             // use the capture groups to pull the numbers we need out, then turn them into numbers
             let number_of_dice: i32 = roll_match.get(1).unwrap().as_str().parse().unwrap();
             let die_max:i32 = roll_match.get(2).unwrap().as_str().parse().unwrap();
-            println!("{}", roll_match.get(3).unwrap().as_str());
             let modifier:i32 = if roll_match.get(3) == None { 0 } else { roll_match.get(3).unwrap().as_str().parse().unwrap() };
             // console.log debug statement
             // println!("Dice roll numbers: {:?}, {:?}, {:?}", number_of_dice, die_max, modifier);
