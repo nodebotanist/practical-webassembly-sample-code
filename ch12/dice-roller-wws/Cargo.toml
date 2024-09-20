@@ -1,0 +1,11 @@
+[package]
+name = "dice-roller-wws"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.63"
+wasm-workers-rs = { git = "https://github.com/webassemblylabs/wasm-workers-server/", tag = "v1.3.0" }
+spin-sdk = "3.0.1"
+roll-checker = { path = "../wasm/" }
+regex="1"

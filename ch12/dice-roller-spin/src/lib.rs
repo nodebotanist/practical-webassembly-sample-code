@@ -35,12 +35,12 @@ fn handle_dice_roller_spin(req: Request) -> anyhow::Result<impl IntoResponse> {
             let die_max:i32 = roll_match.get(2).unwrap().as_str().parse().unwrap();
             let modifier:i32 = if roll_match.get(3) == None { 0 } else { roll_match.get(3).unwrap().as_str().parse().unwrap() };
             // console.log debug statement
-            // println!("Dice roll numbers: {:?}, {:?}, {:?}", number_of_dice, die_max, modifier);
+            println!("Dice roll numbers: {:?}, {:?}, {:?}", number_of_dice, die_max, modifier);
 
             // Actually run the wasm roll code from ch07
             let roll_result = roll_checker::roll_dice_from_numbers(number_of_dice, die_max, modifier);
             // console.log debug statement
-            // println!("Roll result {:?}", roll_result);
+            println!("Roll result {:?}", roll_result);
             let dice_roll_total = roll_result.total;
             let rolls = roll_result.get_dice_rolls();
 
