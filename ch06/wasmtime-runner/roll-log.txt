@@ -1,3 +1,0 @@
-Result of 8d9+10: 57
-Result of 8d9+10: 48
-Result of 7d7+7: 31

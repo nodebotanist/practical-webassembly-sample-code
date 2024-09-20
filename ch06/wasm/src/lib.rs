@@ -4,15 +4,24 @@ use wasm_bindgen::prelude::*;
 use getrandom::getrandom;
 use regex::Regex;
 
+
+// use wasm-bindgen to include the parse_roll_string from ch04
+// You need to make sure it's instantiated and ready to be run 
+// in your main Javascript 
 #[wasm_bindgen(module = "/lib/ch04/release.js")]
 extern "C" {
     #[wasm_bindgen(js_name = "parse_roll_string")]
     fn parse_roll_string(roll_string: &str) -> js_sys::Array;
 }
 
+// new function validate_roll_string(&str) returns true if &str matches
+// a roll string, false if no roll string is matched in &str
 #[wasm_bindgen]
 pub fn validate_roll_string(roll_string: &str) -> bool {
+    // create a new regular expression
     let reg_exp = Regex::new(r"^[0-9]+[d][0-9]+((\+|-)[0-9]+)?$").unwrap();
+    // if the regex captures returns any result, return true.
+    // else, return false
     match reg_exp.captures(roll_string) {
         None => false,
         _ => true
