@@ -97,14 +97,17 @@ pub fn roll_dice_from_numbers(number_of_dice:i32, die_max:i32, modifier:i32) -> 
 }
 
 #[wasm_bindgen]
-pub fn roll_dice_log(roll_string: &str) {
+pub fn roll_dice_and_log(roll_string: &str) -> Result<RollResult, JsError> {
     let result = roll_dice(roll_string);
     // console log
     use web_sys::console;
 
     match result {
-        Ok(roll_result) => console::log_1(&format!("Roll: {:?}, Result: {:?}", roll_string, roll_result).into()),
-        Err(_) => panic!("Error getting the roll result")
+        Ok(roll_result) => {
+            console::log_1(&format!("Roll: {:?}, Result: {:?}", roll_string, roll_result).into());
+            Ok(roll_result)
+        },
+        Err(_) => Err(JsError::new(&format!("Error getting dice roll for: {:?}", roll_string).to_owned()))
     }
 }
 
